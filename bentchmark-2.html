@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script>
+		function Bentchmark(){
+			this.beginTime = new Date();
+		};
+
+		Bentchmark.prototype = {
+			test : function(){
+				return (new Date()).getTime() - this.beginTime.getTime();
+			}
+		};
+
+	</script>
+	<script src="http://underscorejs.ru/underscore-min.js"></script>
+	<script src="pervitin.js"></script>
+
+	<style>
+		body, html {
+			margin: 0;
+			padding: 10px 20px;
+		}
+
+		form {
+			margin-bottom: 20px;
+		}
+
+		ul, li {
+			padding: 0;
+			margin: 0;
+			list-style: none;
+		}
+
+		li {
+			padding: 0 10px;
+			display: block;
+		}
+
+		li > span {
+			display: block;
+			border-left: solid 2px green;
+			margin-left: 10px;
+		}
+
+		div {
+			width: 170px;
+			float: left;
+			border: solid 1px #ccc;
+			margin-right: 10px;
+		}
+
+		div:last-child {
+			margin-right: 0;
+		}
+
+		div > span {
+			display: block;
+			font-size: 20px;
+			padding: 0 20px;
+			line-height: 30px;
+			position: relative;
+			font-size: 11px;
+		}
+
+		div > span:before {
+			content: attr(data-time);
+			display: block;
+			position: absolute;
+			top: 0;
+			right: 0;
+			color: green;
+			padding-right: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<span id="pervitin-time-10">Pervitin 10</span>
+		<ul id="pervitin-10"></ul>
+	</div>
+	<div>
+		<span id="underscore-time-10">Underscore 10</span>
+		<ul id="underscore-10"></ul>
+	</div>
+
+	<div>
+		<span id="pervitin-time-100">Pervitin 100</span>
+		<ul id="pervitin-100"></ul>
+	</div>
+	<div>
+		<span id="underscore-time-100">Underscore 100</span>
+		<ul id="underscore-100"></ul>
+	</div>
+
+	<div>
+		<span id="pervitin-time-1000">Pervitin 1000</span>
+		<ul id="pervitin-1000"></ul>
+	</div>
+	<div>
+		<span id="underscore-time-1000">Underscore 1000</span>
+		<ul id="underscore-1000"></ul>
+	</div>
+
+	<div>
+		<span id="pervitin-time-10000">Pervitin 10000</span>
+		<ul id="pervitin-10000"></ul>
+	</div>
+	<div>
+		<span id="underscore-time-10000">Underscore 10000</span>
+		<ul id="underscore-10000"></ul>
+	</div>
+
+	<div>
+		<span id="pervitin-time-100000">Pervitin 100000</span>
+		<ul id="pervitin-100000"></ul>
+	</div>
+	<div>
+		<span id="underscore-time-100000">Underscore 100000</span>
+		<ul id="underscore-100000"></ul>
+	</div>
+
+
+
+
+	<script id="underscore-template" type="template/underscore">
+		<% for(var i = 0; i <= element; i++) { %>
+			<li class="<%= className %>">
+				<% if(i % 2) { %>
+					<%= text + ' ' + i %>
+				<% } %>
+				<% for(var n = 0; n <= spanElement; n++) { %>
+					<span><%= spanText + ' ' + n %></span>
+				<% } %>
+			</li>
+		<% } %>
+	</script>
+
+
+	<script>
+		var start = new Date();
+
+		document.getElementById('underscore-10').innerHTML = _.template(document.getElementById('underscore-template').innerHTML, {
+			element 	: 10,
+			className 	: 'style-class',
+			text		: 'Element list',
+			spanText 	: 'Span text',
+			spanElement	: 10
+		});
+
+		var end = new Date();
+
+		document.getElementById('underscore-time-10').setAttribute('data-time', (end.getTime()-start.getTime()) + 'ms');
+
+
+		var start = new Date();
+
+		var test = [];
+
+		for(var i = 0; i <= 10; i++) {
+			test.push({
+				tagName 	: 'li',
+				className 	: 'style-class',
+				text 		: (i % 2) && 'Element list ' + i,
+				el 			: []
+			});
+
+			for(var n = 0; n <= 10; n++) {
+				test[i].el.push({
+					tagName : 'span',
+					text	: 'Span text ' + n
+				});
+			}
+		}
+
+		document.getElementById('pervitin-10').appendChild(new pervitin().render(test));
+
+		var end = new Date();
+
+		document.getElementById('pervitin-time-10').setAttribute('data-time', (end.getTime()-start.getTime()) + 'ms');
+	</script>
+
+	<script>
+		var start = new Date();
+
+		document.getElementById('underscore-100').innerHTML = _.template(document.getElementById('underscore-template').innerHTML, {
+			element 	: 100,
+			className 	: 'style-class',
+			text		: 'Element list',
+			spanText 	: 'Span text',
+			spanElement	: 10
+		});
+
+		var end = new Date();
+
+		document.getElementById('underscore-time-100').setAttribute('data-time', (end.getTime()-start.getTime()) + 'ms');
+
+
+		var start = new Date();
+
+		var test = [];
+
+		for(var i = 0; i <= 100; i++) {
+			test.push({
+				tagName 	: 'li',
+				className 	: 'style-class',
+				text 		: (i % 2) && 'Element list ' + i,
+				el 			: []
+			});
+
+			for(var n = 0; n <= 10; n++) {
+				test[i].el.push({
+					tagName : 'span',
+					text	: 'Span text ' + n
+				});
+			}
+		}
+
+		document.getElementById('pervitin-100').appendChild(new pervitin().render(test));
+
+		var end = new Date();
+
+		document.getElementById('pervitin-time-100').setAttribute('data-time', (end.getTime()-start.getTime()) + 'ms');
+	</script>
+
+	<script>
+		var start = new Date();
+
+		document.getElementById('underscore-1000').innerHTML = _.template(document.getElementById('underscore-template').innerHTML, {
+			element 	: 1000,
+			className 	: 'style-class',
+			text		: 'Element list',
+			spanText 	: 'Span text',
+			spanElement	: 10
+		});
+
+		var end = new Date();
+
+		document.getElementById('underscore-time-1000').setAttribute('data-time', (end.getTime()-start.getTime()) + 'ms');
+
+
+		var start = new Date();
+
+		var test = [];
+
+		for(var i = 0; i <= 1000; i++) {
+			test.push({
+				tagName 	: 'li',
+				className 	: 'style-class',
+				text 		: (i % 2) && 'Element list ' + i,
+				el 			: []
+			});
+
+			for(var n = 0; n <= 10; n++) {
+				test[i].el.push({
+					tagName : 'span',
+					text	: 'Span text ' + n
+				});
+			}
+		}
+
+		document.getElementById('pervitin-1000').appendChild(new pervitin().render(test));
+
+		var end = new Date();
+
+		document.getElementById('pervitin-time-1000').setAttribute('data-time', (end.getTime()-start.getTime()) + 'ms');
+	</script>
+
+	<script>
+		var start = new Date();
+
+		document.getElementById('underscore-10000').innerHTML = _.template(document.getElementById('underscore-template').innerHTML, {
+			element 	: 10000,
+			className 	: 'style-class',
+			text		: 'Element list',
+			spanText 	: 'Span text',
+			spanElement	: 10
+		});
+
+		var end = new Date();
+
+		document.getElementById('underscore-time-10000').setAttribute('data-time', (end.getTime()-start.getTime()) + 'ms');
+
+
+		var start = new Date();
+
+		var test = [];
+
+		for(var i = 0; i <= 10000; i++) {
+			test.push({
+				tagName 	: 'li',
+				className 	: 'style-class',
+				text 		: (i % 2) && 'Element list ' + i,
+				el 			: []
+			});
+
+			for(var n = 0; n <= 10; n++) {
+				test[i].el.push({
+					tagName : 'span',
+					text	: 'Span text ' + n
+				});
+			}
+		}
+
+		document.getElementById('pervitin-10000').appendChild(new pervitin().render(test));
+
+		var end = new Date();
+
+		document.getElementById('pervitin-time-10000').setAttribute('data-time', (end.getTime()-start.getTime()) + 'ms');
+	</script>
+
+	<script>
+		var start = new Date();
+
+		document.getElementById('underscore-100000').innerHTML = _.template(document.getElementById('underscore-template').innerHTML, {
+			element 	: 100000,
+			className 	: 'style-class',
+			text		: 'Element list',
+			spanText 	: 'Span text',
+			spanElement	: 10
+		});
+
+		var end = new Date();
+
+		document.getElementById('underscore-time-100000').setAttribute('data-time', (end.getTime()-start.getTime()) + 'ms');
+
+
+		var start = new Date();
+
+		var test = [];
+
+		for(var i = 0; i <= 100000; i++) {
+			test.push({
+				tagName 	: 'li',
+				className 	: 'style-class',
+				el 			: [{
+					tagName : 'span',
+					text	: 'Element span ' + i
+				}]
+			});
+		}
+
+		document.getElementById('pervitin-100000').appendChild(new pervitin().render(test));
+
+		var end = new Date();
+
+		document.getElementById('pervitin-time-100000').setAttribute('data-time', (end.getTime()-start.getTime()) + 'ms');
+	</script>
+</body>
+</html>
